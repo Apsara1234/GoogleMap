@@ -4,12 +4,16 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -39,9 +43,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        // Add a marker in Sydney and move the camera
+//        LatLng sydney = new LatLng(27.6967249, 85.334327817);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in MadanBhandari"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        List<LatitudeLongitude> latLngs= new ArrayList<>();
+        latLngs.add(new LatitudeLongitude(27.6967249, 85.334327817, "MadanBhandari"));
+//        latLngs.add(LatitudeLongitude())
+
+        CameraUpdate center, zoom;
+        for(int i=0; i<latLngs.size();i++){
+            center= CameraUpdateFactory.newLatLng(new LatLng(latLngs.get(i). getLat(),
+                    latLngs.get(i).getLon()));
+            zoom=CameraUpdateFactory.zoomTo(16);
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latLngs.get(i).getLat(),
+                   latLngs.get(i).getLon())).title(latLngs.get(i).getMarker()));
+            mMap.moveCamera(center);
+            mMap.animateCamera(zoom);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+        }
     }
 }
